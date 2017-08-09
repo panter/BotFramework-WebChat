@@ -54,7 +54,7 @@ export const sendFiles = (files: FileList, from: User, locale: string) => ({
 
 import { History } from './History';
 import { MessagePane } from './MessagePane';
-import { Shell } from './Shell';
+import { Shell, ShellFunctions } from './Shell';
 
 export class Chat extends React.Component<ChatProps, {}> {
 
@@ -65,6 +65,7 @@ export class Chat extends React.Component<ChatProps, {}> {
     private activitySubscription: Subscription;
     private connectionStatusSubscription: Subscription;
     private selectedActivitySubscription: Subscription;
+    private shellRef: React.Component & ShellFunctions;
 
     private chatviewPanel: HTMLElement;
     private resizeListener = () => this.setSize();
@@ -73,6 +74,8 @@ export class Chat extends React.Component<ChatProps, {}> {
         super(props);
 
         konsole.log("BotChat.Chat props", props);
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 
         this.store.dispatch<ChatActions>({
             type: 'Set_Locale',
@@ -111,6 +114,17 @@ export class Chat extends React.Component<ChatProps, {}> {
             width: this.chatviewPanel.offsetWidth,
             height: this.chatviewPanel.offsetHeight
         });
+    }
+
+    private handleKeyDown(evt: any) {
+        // Chat textbox has "onKeyDown" handler that will call evt.stopPropagation, preventing the handled event to bubble up to this point
+        if (
+            evt.key !== 'Enter'
+            && evt.key !== ' '
+            && evt.key !== 'Tab'
+        ) {
+            this.shellRef.focus();
+        }
     }
 
     componentDidMount() {
@@ -184,12 +198,17 @@ export class Chat extends React.Component<ChatProps, {}> {
 
         return (
             <Provider store={ this.store }>
-                <div className="wc-chatview-panel" ref={ div => this.chatviewPanel = div }>
+                <div
+                    className="wc-chatview-panel"
+                    onKeyDown={ this.handleKeyDown }
+                    ref={ div => this.chatviewPanel = div }
+                    tabIndex={ 0 }
+                >
                     { header }
                     <MessagePane>
                         <History />
                     </MessagePane>
-                    <Shell />
+                    <Shell ref={ (shellWrapper: any) => this.shellRef = shellWrapper.getWrappedInstance() } />
                     { resize }
                 </div>
             </Provider>
