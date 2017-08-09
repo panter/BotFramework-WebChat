@@ -38,12 +38,10 @@ class ShellContainer extends React.Component<Props, {}> {
     }
 
     private onClickSend() {
-        this.textInput.focus();
         this.sendMessage();
     }
 
     private onChangeFile() {
-        this.textInput.focus();
         this.props.sendFiles(this.fileInput.files);
         this.fileInput.value = null;
     }
@@ -73,7 +71,7 @@ class ShellContainer extends React.Component<Props, {}> {
             'wc-send',
             showMicButton && 'hidden'
         );
-   
+
         const micButtonClassName = classList(
             'wc-mic',
             !showMicButton && 'hidden',
@@ -125,7 +123,7 @@ export const Shell = connect(
         // passed down to ShellContainer
         inputText: state.shell.input,
         strings: state.format.strings,
-        // only used to create helper functions below 
+        // only used to create helper functions below
         locale: state.format.locale,
         user: state.connection.user,
         listening : state.shell.listening
