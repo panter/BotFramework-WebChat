@@ -22,15 +22,15 @@ interface CommandValuesMap {
 }
 
 /*
- * 1. Add command following CommandValues interface 
- * 
+ * 1. Add command following CommandValues interface
+ *
  * 2. Create a DirectLineActivity in server_content.ts
- * 
+ *
  * 3. Import variable to this file and use it as param.
- * 
- * Note: if it is needed to change index.js, so index.ts must be 
+ *
+ * Note: if it is needed to change index.js, so index.ts must be
  * updated and compiled. (use: npm run build-test)
- *  
+ *
 */
 var commands_map: CommandValuesMap = {
     "hi": {
@@ -134,7 +134,7 @@ var commands_map: CommandValuesMap = {
 
             // Carousel made of 4 cards.
             // 3-Clicks are needed to move all carousel to right.
-            // Note: Electron browser width size must not be changed.             
+            // Note: Electron browser width size must not be changed.
             right_arrow.click();
             setTimeout(() => {
                 right_arrow.click();
@@ -265,7 +265,7 @@ var commands_map: CommandValuesMap = {
             var ul_object = document.querySelectorAll('ul')[0];
             var show_actions_length = document.querySelectorAll('.show-actions').length;
 
-            // Validating if the the 3 buttons are displayed and suggested actions are visibile  
+            // Validating if the the 3 buttons are displayed and suggested actions are visibile
             return ul_object.childNodes[0].textContent == "Blue" &&
                 ul_object.childNodes[1].textContent == "Red" &&
                 ul_object.childNodes[2].textContent == "Green" &&
@@ -406,17 +406,28 @@ var commands_map: CommandValuesMap = {
         client: function () {
             return (((document.querySelector('.wc-shellinput') as HTMLInputElement).placeholder === 'Type your message...'));
         }
+    },
+    "focus on type": {
+        do: function (nightmare) {
+            nightmare
+                .type('.wc-chatview-panel', 'Hi!')
+                .wait(1000);
+        },
+        client: function () {
+            debugger;
+            return (((document.querySelector('.wc-shellinput') as HTMLInputElement).value === 'Hi!'));
+        }
     }
     /*
-     ** Add your commands to test here **  
+     ** Add your commands to test here **
     "command": {
         client: function () { JavaScript evaluation syntax },
         server: function (res, sendActivity) {
             sendActivity(res, sever_content DirectLineActivity);
         }
     }
- 
-    ** For adaptive cards, your command will be starting with card <space> command **  
+
+    ** For adaptive cards, your command will be starting with card <space> command **
     "card command": {
         client: function () { JavaScript evaluation syntax },
         server: function (res, sendActivity) {
@@ -424,7 +435,7 @@ var commands_map: CommandValuesMap = {
             sendActivity(res, server_content.adaptive_cards);
         }
     }
- 
+
     ** For speech specific command, it will be starting with speech <space> command **
         "speech command": {
         client: function () { JavaScript evaluation syntax },
