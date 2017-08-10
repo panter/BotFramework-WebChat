@@ -16,7 +16,6 @@ test/interfaces_sdk.js*
 npm
 cdn
 webpacked
-built
 botchat.js
 botchat.js.map
 CognitiveServices.js
